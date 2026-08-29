@@ -156,15 +156,6 @@ cd filen-webdav-docker
 docker build -t qinlingmonkey/filen-webdav:v2 .
 ```
 
-只打 `v2`，不要改 `v1` 或 `latest`。
-
-## 以后制作 v3
-
-1. 确认官方最新 `@filen/webdav` 版本。
-2. 更新根目录 `package.json` 中的版本并重新生成 lock 文件。
-3. 构建并测试：`docker build -t qinlingmonkey/filen-webdav:v3 .`
-4. 本地 `docker run` / `docker logs` 验证后再 push `v3`。
-5. 保留 v1、v2，不要覆盖旧 tag。
 
 ## 本地测试建议
 
