@@ -1,0 +1,37 @@
+services:
+  filen-webdav:
+    image: qinlingmonkey/filen-webdav:v2
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: filen-webdav-v2
+    restart: unless-stopped
+    init: true
+    ports:
+      - "${WEBDAV_PUBLISH_PORT:-1900}:1900"
+    env_file:
+      - .env
+    environment:
+      HOME: /data
+      XDG_CONFIG_HOME: /data/.config
+      HOST: 0.0.0.0
+      PORT: 1900
+      WEBDAV_HOST: 0.0.0.0
+      WEBDAV_PORT: 1900
+    volumes:
+      - filen-webdav-data:/data
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "node",
+          "-e",
+          "require('http').get('http://127.0.0.1:1900',r=>process.exit(r.statusCode===401||(r.statusCode>=200&&r.statusCode<500)?0:1)).on('error',()=>process.exit(1))"
+        ]
+      interval: 30s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+
+volumes:
+  filen-webdav-data:
